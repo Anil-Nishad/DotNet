@@ -17,6 +17,7 @@ namespace DotNet.API.Mappings
             CreateMap<AddWalksRequestDto, Walk>().ReverseMap();
             CreateMap<Walk, WalksDto>().ReverseMap();
             CreateMap<Difficulty, DifficultyDto>().ReverseMap();
+            CreateMap<UpdateWalksRequestDto, Walk>().ReverseMap();
         }
 
         public class UserDTO
