@@ -87,7 +87,6 @@ namespace DotNet.API.Controllers
             };
 
             return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
-
         }
 
         [HttpPut("UpdateRegion/{id:Guid}")]
