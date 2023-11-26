@@ -3,6 +3,7 @@ using DotNet.API.Models.Domain;
 using DotNet.API.Models.DTO;
 using DotNet.API.Repositories;
 using DotNet.API.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace DotNet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class WalksController : ControllerBase
     {
         private readonly IMapper mapper;

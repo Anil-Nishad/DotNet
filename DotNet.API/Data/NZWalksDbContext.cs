@@ -7,7 +7,7 @@ namespace DotNet.API.Data
     {
         // To create Constructor
         //ctor + double Tab
-        public NZWalksDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public NZWalksDbContext(DbContextOptions<NZWalksDbContext> dbContextOptions) : base(dbContextOptions)
         {
             
         }

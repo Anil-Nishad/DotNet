@@ -3,6 +3,7 @@ using DotNet.API.CustomActionFilters;
 using DotNet.API.Models.Domain;
 using DotNet.API.Models.DTO;
 using DotNet.API.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace DotNet.API.Controllers
         }
 
         [HttpGet("GetAllRegions")]
+        [Authorize(Roles = "Writer,Reader")]
         public async Task<IActionResult> GetAllRegions()
         {
             var regionsDomain = await regionRepository.GetAllAsync();
@@ -35,6 +37,7 @@ namespace DotNet.API.Controllers
         }
 
         [HttpGet("GetRegionById/{id:Guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetRegionById(Guid id)
         {
             // Get Region Domain Model From Database
@@ -53,6 +56,7 @@ namespace DotNet.API.Controllers
         }
 
         [HttpPost("CreateRegion")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
             if (ModelState.IsValid)
@@ -75,6 +79,7 @@ namespace DotNet.API.Controllers
         }
 
         [HttpPut("UpdateRegion/{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         [ValidateModel]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
@@ -95,6 +100,7 @@ namespace DotNet.API.Controllers
         }
 
         [HttpDelete("DeleteRegion/{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteRegion([FromRoute] Guid id)
         {
             var regionDomainModel = await regionRepository.DeleteAsync(id);
