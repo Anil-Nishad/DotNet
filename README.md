@@ -15,4 +15,9 @@ Advantages of DTOs
 3. Security
 4. Versioning
 
+#Navigation Properties
+
+1. Allow to Navigate From one Entity To Another
+2. Walks Domain model will have Region Navigation Property
+
 \*/
