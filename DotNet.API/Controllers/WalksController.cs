@@ -42,5 +42,50 @@ namespace DotNet.API.Controllers
             // Map Domain Model to DTO
             return Ok(mapper.Map<List<WalksDto>>(walksDomainModel));
         }
+
+        [HttpGet("GetWalkByID/{id:Guid}")]
+        public async Task<IActionResult> GetWalkByID([FromRoute] Guid id)
+        {
+            var walkDomainModel = await walksRepository.GetAsync(id);
+
+            if (walkDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            //Map Domain Model to DTO
+            return Ok(mapper.Map<WalksDto>(walkDomainModel));
+        }
+
+        [HttpPut("UpdateWalk/{id:Guid}")]
+        public async Task<IActionResult> UpdateWalk([FromRoute] Guid id, UpdateWalksRequestDto updateWalksRequestDto)
+        {
+            // Map DTO  to Domain Model
+            var walkDomainModel = mapper.Map<Walk>(updateWalksRequestDto);
+
+            walkDomainModel = await walksRepository.UpdateAsync(id, walkDomainModel);
+
+            if (walkDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            //Map Domain Model to DTO
+            return Ok(mapper.Map<WalksDto>(walkDomainModel));
+        }
+
+        [HttpDelete("DeleteWalk/{id:Guid}")]
+        public async Task<IActionResult> DeleteWalk([FromRoute] Guid id)
+        {
+            var deletedWAlkDomainModel = await walksRepository.DeleteAsync(id);
+
+            if (deletedWAlkDomainModel == null)
+            {
+                return NotFound(id);
+            }
+
+            //Map Domain Model to DTO
+            return Ok(mapper.Map<WalksDto>(deletedWAlkDomainModel));
+        }
     }
 }
