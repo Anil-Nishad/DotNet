@@ -12,6 +12,11 @@ namespace DotNet.API.Mappings
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.FullName))
                 .ReverseMap();
             CreateMap<Region, RegionDto>().ReverseMap();
+            CreateMap<AddRegionRequestDto, Region>().ReverseMap();
+            CreateMap<UpdateRegionRequestDto, Region>().ReverseMap();
+            CreateMap<AddWalksRequestDto, Walk>().ReverseMap();
+            CreateMap<Walk, WalksDto>().ReverseMap();
+            CreateMap<Difficulty, DifficultyDto>().ReverseMap();
         }
 
         public class UserDTO
