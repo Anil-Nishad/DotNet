@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DotNet.API.CustomActionFilters;
 using DotNet.API.Models.Domain;
 using DotNet.API.Models.DTO;
 using DotNet.API.Repositories.Interface;
@@ -54,19 +55,27 @@ namespace DotNet.API.Controllers
         [HttpPost("CreateRegion")]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
-            // Map or Convert DTO to Domain Model
-            var regionDomainModel = mapper.Map<Region>(addRegionRequestDto);
+            if (ModelState.IsValid)
+            {
+                // Map or Convert DTO to Domain Model
+                var regionDomainModel = mapper.Map<Region>(addRegionRequestDto);
 
-            // Use Domain Model to create Region
-            regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
+                // Use Domain Model to create Region
+                regionDomainModel = await regionRepository.CreateAsync(regionDomainModel);
 
-            // Map Domain Model back to DTO
-            var regionDto = mapper.Map<RegionDto>(regionDomainModel);
+                // Map Domain Model back to DTO
+                var regionDto = mapper.Map<RegionDto>(regionDomainModel);
 
-            return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
+                return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpPut("UpdateRegion/{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
             //Map DTO to Domain Model
