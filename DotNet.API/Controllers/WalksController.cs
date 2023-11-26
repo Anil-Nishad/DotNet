@@ -43,6 +43,26 @@ namespace DotNet.API.Controllers
             return Ok(mapper.Map<List<WalksDto>>(walksDomainModel));
         }
 
+        // GET: /api/walks?filterOn=Name&filterQuery=Track&sortBy=Name&isAscending=true&pageNumber=1&pageSize=10
+        [HttpGet("GetAllWalksUsingFSP")]
+        public async Task<IActionResult> GetAllWalksUsingFSP([FromQuery] string? filterOn, 
+                                                             [FromQuery] string? filterQuery,
+                                                             [FromQuery] string? sortBy, 
+                                                             [FromQuery] bool? isAscending,
+                                                             [FromQuery] int pageNumber = 1,
+                                                             [FromQuery] int pageSize = 1000)
+        {
+            var walksDomainModel = await walksRepository.GetAllAsyncFSP(filterOn, 
+                                                                        filterQuery, 
+                                                                        sortBy, 
+                                                                        isAscending ?? true, 
+                                                                        pageNumber, 
+                                                                        pageSize);
+
+            // Map Domain Model to DTO
+            return Ok(mapper.Map<List<WalksDto>>(walksDomainModel));
+        }
+
         [HttpGet("GetWalkByID/{id:Guid}")]
         public async Task<IActionResult> GetWalkByID([FromRoute] Guid id)
         {
