@@ -8,5 +8,6 @@ namespace DotNet.API.Repositories.Interface
         Task<List<Walk>> GetAllAsync();
         Task<Walk?> GetAsync(Guid id);
         Task<Walk?> UpdateAsync(Guid id, Walk walk);
+        Task<Walk?> DeleteAsync(Guid id);
     }
 }
