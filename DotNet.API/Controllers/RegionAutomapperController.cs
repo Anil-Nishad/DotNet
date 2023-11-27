@@ -6,6 +6,7 @@ using DotNet.API.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace DotNet.API.Controllers
 {
@@ -15,25 +16,44 @@ namespace DotNet.API.Controllers
     {
         private readonly IRegionRepository regionRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionAutomapperController> logger;
 
         public RegionAutomapperController(IRegionRepository regionRepository, 
-                                            IMapper mapper)
+                                            IMapper mapper,
+                                            ILogger<RegionAutomapperController> logger)
         {
             this.regionRepository = regionRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet("GetAllRegions")]
-        [Authorize(Roles = "Writer,Reader")]
+        //[Authorize(Roles = "Writer,Reader")]
         public async Task<IActionResult> GetAllRegions()
         {
-            var regionsDomain = await regionRepository.GetAllAsync();
+            try
+            {
+                logger.LogInformation("GetAllRegions Action Method was invoked");
+                logger.LogWarning("This is a warning log");
+                logger.LogError("This ia a error log");
 
-            // Map Domain Models To DTOs
-            var regionsDto = mapper.Map<List<RegionDto>>(regionsDomain);
+                var regionsDomain = await regionRepository.GetAllAsync();
 
-            // Return DTOs
-            return Ok(regionsDto);
+                // Map Domain Models To DTOs
+                var regionsDto = mapper.Map<List<RegionDto>>(regionsDomain);
+
+                logger.LogInformation($"Finished GetAllRegions request with Data: {JsonSerializer.Serialize(regionsDomain)}");
+
+                // Return DTOs
+                return Ok(regionsDto);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message); 
+                return BadRequest(ex.Message);
+                //throw;
+            }
+            
         }
 
         [HttpGet("GetRegionById/{id:Guid}")]
