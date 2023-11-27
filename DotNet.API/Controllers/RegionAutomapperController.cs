@@ -6,6 +6,7 @@ using DotNet.API.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Text.Json;
 
 namespace DotNet.API.Controllers
@@ -49,8 +50,10 @@ namespace DotNet.API.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, ex.Message); 
-                return BadRequest(ex.Message);
+                logger.LogError(ex, ex.Message);
+                return Problem("Something Went Wrong", null, (int)HttpStatusCode.InternalServerError);
+                //return Problem(ex.Message, null, (int)HttpStatusCode.InternalServerError);
+                //return BadRequest(ex.Message);
                 //throw;
             }
             

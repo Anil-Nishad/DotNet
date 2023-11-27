@@ -1,5 +1,6 @@
 using DotNet.API.Data;
 using DotNet.API.Mappings;
+using DotNet.API.Middlewares;
 using DotNet.API.Repositories;
 using DotNet.API.Repositories.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -111,6 +112,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
